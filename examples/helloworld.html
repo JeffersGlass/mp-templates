@@ -35,12 +35,15 @@
                 display("As expected, this throws a KeyError: ", str(err))
         </script>
         <script type="mpy">  
+            # safe_substitute doesn't error on unknown keys
             display(Template('$who likes $what').safe_substitute(d))
         </script>
         <script type="mpy">  
+            # using braced identifiers works too
             display(Template('${who} likes pizza too').substitute(d))
         </script>
         <script type="mpy">  
+            # Use a double-delimiter to include a single delimiter in the output
             display(Template('${who} like big $$money').substitute(d))
         </script>
 
