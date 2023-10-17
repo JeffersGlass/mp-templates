@@ -1,6 +1,16 @@
 A functional, if a little bodgey, implementation of CPython's `Template` class suitable for Micropython.
 
-This involves bringing over, and slightly modifying, a number of additional CPython clases and functions, including:
+## Usage
+
+To try this out in PyScript+Micropthon:
+  1. Clone this repository
+  2. Open `examples/helloworld.html` in your live server of choice
+
+To include this in your own experiments, copy the `template` folder into your project.
+
+## Notes
+
+Adding `Template` involves bringing over, and slightly modifying, a number of additional CPython clases and functions, including:
   * `ChainMap`
   * `MutableMapping`
   * `Mapping`
