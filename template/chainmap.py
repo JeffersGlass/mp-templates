@@ -1,10 +1,10 @@
 # From https://github.com/python/cpython/blob/main/Lib/collections/__init__.py#L985
 # Modifications noted in comments with MOD:
 
-from .mutablemapping import MutableMapping as _MutableMapping
+from .mutablemapping import MutableMapping
 from .mapping import Mapping as _Mapping
 
-class ChainMap(_MutableMapping):
+class ChainMap(MutableMapping):
     ''' A ChainMap groups multiple dicts (or other mappings) together
     to create a single, updateable view.
 
