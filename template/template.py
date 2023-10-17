@@ -103,27 +103,6 @@ class Template:
                              self.pattern)
         return _re.sub(self.pattern, convert, self.template)
 
-    def _safe_substitute(self, mapping=_sentinel_dict, **kws): #MOD: No position only arguments
-        if mapping is _sentinel_dict:
-            mapping = kws
-        elif kws:
-            mapping = _ChainMap(kws, mapping)
-        # Helper function for .sub()
-        def convert(mo):
-            named = mo.group(1) or mo.group(2)
-            if named is not None:
-                try:
-                    return str(mapping[named])
-                except KeyError:
-                    return mo.group(0)
-            if mo.group(3) is not None:
-                return self.delimiter
-            if mo.group(4) is not None:
-                return mo.group()
-            raise ValueError('Unrecognized named group in pattern',
-                             self.pattern)
-        return _re.sub(self.pattern, convert, self.template)
-
     def is_valid(self):
         for mo in self.pattern.finditer(self.template):
             if mo.group('invalid') is not None:
