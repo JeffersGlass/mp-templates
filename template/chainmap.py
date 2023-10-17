@@ -2,6 +2,7 @@
 # Modifications noted in comments with MOD:
 
 from .mutablemapping import MutableMapping as _MutableMapping
+from .mapping import Mapping as _Mapping
 
 class ChainMap(_MutableMapping):
     ''' A ChainMap groups multiple dicts (or other mappings) together
@@ -116,14 +117,14 @@ class ChainMap(_MutableMapping):
         return self
 
     def __or__(self, other):
-        if not isinstance(other, _collections_abc.Mapping):
+        if not isinstance(other, _Mapping):
             return NotImplemented
         m = self.copy()
         m.maps[0].update(other)
         return m
 
     def __ror__(self, other):
-        if not isinstance(other, _collections_abc.Mapping):
+        if not isinstance(other, _Mapping):
             return NotImplemented
         m = dict(other)
         for child in reversed(self.maps):
