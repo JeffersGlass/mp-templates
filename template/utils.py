@@ -1,3 +1,5 @@
+import re
+
 ## From https://github.com/python/cpython/blob/0f9d0fb437fd206e281b84309f171f5dfe3ef0c2/Lib/re/__init__.py#L302
 
 # SPECIAL_CHARS
@@ -40,3 +42,13 @@ def _charmaptranslate_output(char, table):
     except LookupError:
         return char
     
+# Adaptation of re.finditer, based on available methods
+def finditer(pattern, string, pos = 0, endpos = -1):
+    string = string[pos: endpos]
+    while string:
+        mo = re.match(pattern, string)
+        if (mo):
+            yield mo
+            string = string[len(mo.group(0)):]
+        else:
+            string = string[1:]

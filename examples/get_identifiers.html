@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PyScript Next</title>
+    <link rel="stylesheet" href="https://pyscript.net/snapshots/2023.09.1.RC2/core.css">
+    <script type="module" src="https://pyscript.net/snapshots/2023.09.1.RC2/core.js"></script>
+</head>
+
+<body>
+    <mpy-config>
+        [[fetch]]
+        files = ['__init__.py', 'template.py', 'chainmap.py', 'mutablemapping.py', 'mapping.py', 'shims.py', 'utils.py']
+        from = '../template'
+        to_folder = 'template'
+    </mpy-config>
+    <script type="mpy">
+        # Based on CPython finditer tests from https://github.com/python/cpython/blob/cb1bf89c4066f30c80f7d1193b586a2ff8c40579/Lib/test/test_re.py#L1489-L1512
+        from template import Template 
+
+        #eq = self.assertEqual
+        #raises = self.assertRaises
+
+        s = Template('$who likes to eat a bag of ${what} worth $$100')
+        ids = s.get_identifiers()
+        assert ids ==  ['who', 'what']
+
+        # repeated identifiers only included once
+        s = Template('$who likes to eat a bag of ${what} worth $$100; ${who} likes to eat a bag of $what worth $$100')
+        ids = s.get_identifiers()
+        assert ids ==  ['who', 'what']
+
+        # invalid identifiers are ignored
+        s = Template('$who likes to eat a bag of ${what} worth $100')
+        ids = s.get_identifiers()
+        assert ids == ['who', 'what']
+
+        # if the pattern has an unrecognized capture group,
+        # it should raise ValueError like substitute and safe_substitute do
+        class BadPattern(Template):
+            pattern = r"""
+            (?P<badname>.*)                  |
+            (?P<escaped>@{2})                   |
+            @(?P<named>[_a-z][._a-z0-9]*)       |
+            @{(?P<braced>[_a-z][._a-z0-9]*)}    |
+            (?P<invalid>@)                      |
+            """
+        s = BadPattern('@bag.foo.who likes to eat a bag of @bag.what')
+        try:
+            s.get_identifiers()
+        except ValueError as err:
+            assert err is not None
+
+        print("DONE")
+        </script>
+</body>
+
+</html>

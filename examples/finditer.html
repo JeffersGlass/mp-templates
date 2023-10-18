@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PyScript Next</title>
+    <link rel="stylesheet" href="https://pyscript.net/snapshots/2023.09.1.RC2/core.css">
+    <script type="module" src="https://pyscript.net/snapshots/2023.09.1.RC2/core.js"></script>
+</head>
+
+<body>
+    <mpy-config>
+        [[fetch]]
+        files = ['__init__.py', 'template.py', 'chainmap.py', 'mutablemapping.py', 'mapping.py', 'shims.py', 'utils.py']
+        from = '../template'
+        to_folder = 'template'
+    </mpy-config>
+    <script type="mpy">
+            # Based on CPython finditer tests from https://github.com/python/cpython/blob/cb1bf89c4066f30c80f7d1193b586a2ff8c40579/Lib/test/test_re.py#L1489-L1512
+            from pyscript import display
+            from template import Template, finditer
+
+            iter = finditer(r":+", "a:b::c:::d")
+            assert [item.group(0) for item in iter] == [":", "::", ":::"]
+
+            iter = finditer(r":+", "a:b::c:::d", 1, 10)
+            assert [item.group(0) for item in iter] == [":", "::", ":::"]
+
+            iter = finditer(r":+", "a:b::c:::d", pos=1, endpos=10)
+            assert [item.group(0) for item in iter] == [":", "::", ":::"]
+
+            iter = finditer(r":+", "a:b::c:::d", endpos=10, pos=1)
+            assert [item.group(0) for item in iter] == [":", "::", ":::"]
+
+            iter = finditer(r":+", "a:b::c:::d", pos=3, endpos=8)
+            assert [item.group(0) for item in iter] == ["::", "::"]
+
+            print("DONE")
+        </script>
+</body>
+
+</html>

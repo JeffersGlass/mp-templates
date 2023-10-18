@@ -3,7 +3,7 @@
 
 import re
 from .chainmap import ChainMap
-from .utils import escape
+from .utils import escape, finditer
 
 _sentinel_dict = {}
 
@@ -69,7 +69,7 @@ class Template:
                 return str(mapping[braced.strip('{}')])
             if mo.group(1) is not None:
                 return self.delimiter
-            if mo.group(4) is not None:
+            if mo.group(5) is not None:
                 self._invalid(mo)
             raise ValueError('Unrecognized named group in pattern',
                              self.pattern)
@@ -116,7 +116,23 @@ class Template:
                     self.pattern)
         return True
     
-    # MOD: get_identifiers has been removed
+    # An alternate and relatively inefficient implementation
+    def get_identifiers(self):
+        ids = []
+        for mo in finditer(self.pattern, self.template):
+            named = mo.group(3) or mo.group(4) #Named or braced
+            if named is not None and named not in ids:
+                # add a named group only the first time it appears
+                ids.append(named)
+            elif (named is None
+                and mo.group(5) is None
+                and mo.group(1) is None):
+                # If all the groups are None, there must be
+                # another group we're not expecting
+                raise ValueError('Unrecognized named group in pattern',
+                    self.pattern)
+        return ids
+        
 
 # Initialize Template.pattern.  __init_subclass__() is automatically called
 # only for subclasses, not for the Template class itself.
