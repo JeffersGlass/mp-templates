@@ -1,8 +1,8 @@
 # From https://github.com/python/cpython/blob/main/Lib/string.py
 # Modifications noted in comments with MOD:
 
-import re as _re
-from .chainmap import ChainMap as _ChainMap
+import re
+from .chainmap import ChainMap
 from .utils import escape
 
 _sentinel_dict = {}
@@ -37,7 +37,7 @@ class Template:
         # delimiter and a braced identifier #Braced
         # Other ill-formed delimiter exprs #Invalid
 
-        self.pattern = _re.compile(self._pattern)
+        self.pattern = re.compile(self._pattern)
 
     # Search for $$, $identifier, ${identifier}, and any bare $'s
 
@@ -73,7 +73,7 @@ class Template:
                 self._invalid(mo)
             raise ValueError('Unrecognized named group in pattern',
                              self.pattern)
-        return _re.sub(self.pattern, convert, self.template)
+        return re.sub(self.pattern, convert, self.template)
 
     def safe_substitute(self, mapping=_sentinel_dict, **kws): # MOD: No position-only arguments
         if mapping is _sentinel_dict:
@@ -101,7 +101,7 @@ class Template:
                 return self.group(0)
             raise ValueError('Unrecognized named group in pattern',
                              self.pattern)
-        return _re.sub(self.pattern, convert, self.template)
+        return re.sub(self.pattern, convert, self.template)
 
     def is_valid(self):
         for mo in self.pattern.finditer(self.template):
@@ -115,22 +115,8 @@ class Template:
                 raise ValueError('Unrecognized named group in pattern',
                     self.pattern)
         return True
-
-    def get_identifiers(self):
-        ids = []
-        for mo in self.pattern.finditer(self.template):
-            named = mo.group('named') or mo.group('braced')
-            if named is not None and named not in ids:
-                # add a named group only the first time it appears
-                ids.append(named)
-            elif (named is None
-                and mo.group('invalid') is None
-                and mo.group('escaped') is None):
-                # If all the groups are None, there must be
-                # another group we're not expecting
-                raise ValueError('Unrecognized named group in pattern',
-                    self.pattern)
-        return ids
+    
+    # MOD: get_identifiers has been removed
 
 # Initialize Template.pattern.  __init_subclass__() is automatically called
 # only for subclasses, not for the Template class itself.

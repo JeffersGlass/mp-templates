@@ -11,14 +11,9 @@ for fname in files:
     with open(f"../template/{fname}.py", "r", encoding='utf-8') as f:
         output.append(f"""# ================ {fname}.py ================\n""")
         for line in f.readlines():
-            if not(line.startswith("import") or line.startswith("from")):
+            if not(line.startswith("import .") or line.startswith("from .")):
                 output.append(line)
         output.append("\n\n")
-
-output = """
-class Template():
-    pass
-"""
 
 with open("../combined_output/combined.mpy", "w", encoding='utf-8') as f:
     f.write("".join(output))

@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>PyScript Next</title>
+        <link rel="stylesheet" href="https://pyscript.net/snapshots/2023.09.1.RC2/core.css">
+        <script type="module" src="https://pyscript.net/snapshots/2023.09.1.RC2/core.js"></script>
+    </head>
+    <body>
+        <mpy-config>
+            [[fetch]]
+            files = ['__init__.py', 'template.py', 'chainmap.py', 'mutablemapping.py', 'mapping.py', 'shims.py', 'utils.py']
+            from = '../template'
+            to_folder = 'template'
+        </mpy-config>
+        <script type="mpy">
+            from pyscript import display
+            from template import Template
+
+            t = Template("That $noun is $color - it must be $temperature")
+            print(t.get_identifiers())
+        </script>
+
+    </body>
+</html>
