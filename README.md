@@ -1,4 +1,4 @@
-A functional, if a little bodgey, implementation of CPython's `Template` class suitable for Micropython.
+An adaptation of CPython's `Template` class suitable for Micropython.
 
 ## Usage
 
