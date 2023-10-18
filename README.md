@@ -23,5 +23,5 @@ As well as re-implementing or otherwise working around:
 A number of concessions have been made:
 
   * In CPython, it is possible to [subclass `Template`](https://docs.python.org/3/library/string.html#string.Template) to customize various behaviors. This is not currently implemented.
-  * To put a backstop on inheritance, `Mapping` no longer inherits from `abc.Collection`, which only provides Abstract methods. This breaks some inheritance checks.
+  * `Mapping` no longer inherits from `abc.Collection`, which only provides Abstract methods. This breaks some inheritance checks.
   * In CPython `string.translate` is implemented in C, in a way that carefully accomodates unicode characters. It has been re-implemented here in Python, using a simple `ord()` lookup, with the performance penalties that implies.
