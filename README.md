@@ -14,8 +14,11 @@ Adding `Template` involves bringing over, and slightly modifying, a number of ad
   * `ChainMap`
   * `MutableMapping`
   * `Mapping`
-  * `string.translate`
-  * `re.escape`
+  * `re.escape` (as `utils.escape`)
+
+As well as re-implementing or otherwise working around:
+  * `string.translate` (as `utils.translate`)
+  * `re.finditer` (as `utils.finditer`)
 
 A number of concessions have been made:
 
